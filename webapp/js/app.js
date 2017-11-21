@@ -11,11 +11,11 @@ class MetronomeApp {
         this.soundSelectElementId = soundSelectId || 'metroSound';
         this.startStopId = startStopId || 'metronome';
 
-        const metroSoundEventHandler = {
+        const metroSoundListener = {
             setTempo: (t) => visSettings.tempoBpm = t,
             setStartTime: (t) => visSettings.startTime = t
         };
-        this.metroSound = new MetronomeSound(soundsPath, sounds, metroSoundEventHandler);
+        this.metroSound = new MetronomeSound(soundsPath, sounds, metroSoundListener);
 
         visSettings.getTime = () => this.metroSound.audioContext.currentTime;
 
