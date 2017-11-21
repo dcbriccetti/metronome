@@ -1,10 +1,14 @@
-class Metronome {
-    constructor(soundsPath) {
+class MetronomeSound {
+    constructor(soundsPath, sounds, eventHandler) {
         this.soundsPath = soundsPath;
+        const dummyEventHandler = { setTempo: (t) => {}, setStartTime: (t) => {} };
+        this.eventHandler = eventHandler || dummyEventHandler;
         this.running = false;
         this.tempoBpm = 60;
         this.soundNum = 1;
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const urls = sounds.map(name => this.soundsPath + name);
+        this.soundFiles = new SoundFiles(this.audioContext, urls);
     }
 
     setTempo(bpm) {
@@ -15,16 +19,11 @@ class Metronome {
         this.soundNum = number;
     }
 
-    loadMetronomeSounds(filenames) {
-        const urls = filenames.map(name => this.soundsPath + name);
-        this.soundFiles = new SoundFiles(this.audioContext, urls);
-    }
-
     toggle() {
         if (this.running = ! this.running) {
             this.playMetronome();
         } else {
-            SketchSettings.tempo = 0;
+            this.eventHandler.setTempo(0);
             if (this.source) {
                 this.source.disconnect();
                 this.source = undefined;
@@ -39,8 +38,8 @@ class Metronome {
         function schedule() {
             if (!metronome.running) return;
 
-            SketchSettings.startTime = nextStart;
-            SketchSettings.tempo = metronome.tempoBpm;
+            metronome.eventHandler.setStartTime( nextStart);
+            metronome.eventHandler.setTempo(metronome.tempoBpm);
             const bufIndex = metronome.soundNum - 1;
             if (bufIndex >= metronome.soundFiles.buffers.length) {
                 alert('Sound files are not yet loaded')

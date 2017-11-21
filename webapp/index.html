@@ -18,22 +18,16 @@
             <div class="form-group">
                 <label for="metroSound">Sound</label>
                 <select id="metroSound" class="form-control form-control-lg"
-                        onChange="metronome.setSound(this.selectedIndex + 1)">
-                    <option>High Woodblock</option>
-                    <option>Low Woodblock</option>
-                    <option>High Bongo</option>
-                    <option>Low Bongo</option>
-                    <option>Claves</option>
-                    <option>Drumsticks</option>
+                        onChange="metronomeApp.setSound(this.selectedIndex + 1)">
                 </select>
             </div>
             <div class="form-group">
                 <label for="tempo">Tempo</label>
                 <input id="tempo" class='form-control form-control-lg' type="number" value='60'
-                       min='20' max='180' onChange="metronome.setTempo(this.value);">
+                       min='20' max='180' onChange="metronomeApp.setTempo(this.value);">
             </div>
             <input id="metronome" class="form-control btn btn-lg btn-secondary"
-                   type="button" value="Start" onclick="toggle()"/>
+                   type="button" value="Start" onclick="metronomeApp.toggle()"/>
         </div>
         <div id='visualization' class="col-sm">
         </div>
@@ -51,8 +45,8 @@
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
 
-<script src="js/metronome.js"></script>
-<script src="js/sketch.js"></script>
+<script src="js/metronome-sound.js"></script>
+<script src="js/visualization.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
