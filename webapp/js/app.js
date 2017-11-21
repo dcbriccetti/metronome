@@ -29,18 +29,18 @@ class MetronomeApp {
 
     /**
      * Sets the tempo.
-     * @param tempo in beats per minute
+     * @param bpm tempo in beats per minute
      */
-    setTempo(tempo) {
-        this.metroSound.setTempo(tempo);
+    setTempo(bpm) {
+        this.metroSound.setTempo(bpm);
     }
 
     /**
      * Sets the metronome sound.
-     * @param sound the one-based sound index
+     * @param number the one-based sound index
      */
-    setSound(sound) {
-        this.metroSound.setSound(sound);
+    setSound(number) {
+        this.metroSound.setSound(number);
     }
 
     /** Starts the metronome if it is stopped, and vice versa. */

@@ -11,17 +11,52 @@ class MetronomeSound {
         this.soundFiles = new SoundFiles(this.audioContext, urls);
     }
 
+    /**
+     * Sets the tempo.
+     * @param bpm tempo in beats per minute
+     */
     setTempo(bpm) {
         this.tempoBpm = bpm;
     }
 
+    /**
+     * Sets the metronome sound.
+     * @param number the one-based sound index
+     */
     setSound(number) {
         this.soundNum = number;
     }
 
+    /** Toggle the running state of the metronome */
     toggle() {
+        const ms = this;
+
+        function playMetronome() {
+            let nextStart = ms.audioContext.currentTime;
+
+            function schedule() {
+                if (!ms.running) return;
+
+                ms.listener.setStartTime(nextStart);
+                ms.listener.setTempo(ms.tempoBpm);
+                const bufIndex = ms.soundNum - 1;
+                if (bufIndex >= ms.soundFiles.buffers.length) {
+                    alert('Sound files are not yet loaded')
+                } else if (ms.tempoBpm) {
+                    nextStart += 60 / ms.tempoBpm;
+                    ms.source = ms.audioContext.createBufferSource();
+                    ms.source.buffer = ms.soundFiles.buffers[bufIndex];
+                    ms.source.connect(ms.audioContext.destination);
+                    ms.source.onended = schedule;
+                    ms.source.start(nextStart);
+                }
+            }
+
+            schedule();
+        }
+
         if (this.running = !this.running) {
-            this.playMetronome();
+            playMetronome();
         } else {
             this.listener.setTempo(0);
             if (this.source) {
@@ -29,32 +64,6 @@ class MetronomeSound {
                 this.source = undefined;
             }
         }
-    }
-
-    playMetronome() {
-        const metronome = this;
-        let nextStart = this.audioContext.currentTime;
-
-        function schedule() {
-            if (!metronome.running) return;
-
-            metronome.listener.setStartTime(nextStart);
-            metronome.listener.setTempo(metronome.tempoBpm);
-            const bufIndex = metronome.soundNum - 1;
-            if (bufIndex >= metronome.soundFiles.buffers.length) {
-                alert('Sound files are not yet loaded')
-            } else {
-                const bps = metronome.tempoBpm === 0 ? 1 : metronome.tempoBpm / 60.0;
-                nextStart += 1 / bps;
-                const source = metronome.source = metronome.audioContext.createBufferSource();
-                source.buffer = metronome.soundFiles.buffers[bufIndex];
-                source.connect(metronome.audioContext.destination);
-                source.onended = schedule;
-                source.start(nextStart);
-            }
-        }
-
-        schedule();
     }
 }
 
