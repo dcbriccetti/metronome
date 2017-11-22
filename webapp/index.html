@@ -18,17 +18,23 @@
     <div class="row">
         <div class="col-sm">
             <div class="form-group">
+                <label for="tempo">Tempo</label>
+                <input id="tempo" class='form-control' type="number" value='60'
+                min='20' max='180' onChange="metronomeApp.setTempo(this.value);">
+            </div>
+            <div class="form-group">
                 <label for="metroSound">Sound</label>
-                <select id="metroSound" class="form-control form-control-lg"
+                <select id="metroSound" class="form-control"
                         onChange="metronomeApp.setSound(this.selectedIndex + 1)">
                 </select>
             </div>
             <div class="form-group">
-                <label for="tempo">Tempo</label>
-                <input id="tempo" class='form-control form-control-lg' type="number" value='60'
-                       min='20' max='180' onChange="metronomeApp.setTempo(this.value);">
+                <label for="visType">Visualization</label>
+                <select id="visType" class="form-control"
+                        onChange="metronomeApp.setVisualization(this.selectedIndex)">
+                </select>
             </div>
-            <input id="metronome" class="form-control btn btn-lg btn-secondary"
+            <input id="metronome" class="form-control btn btn-secondary"
                    type="button" value="Start" onclick="metronomeApp.toggle()"/>
         </div>
         <div id='visualization' class="col-sm">
