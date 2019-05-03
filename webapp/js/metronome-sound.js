@@ -27,7 +27,7 @@ class MetronomeSound {
         this.soundNum = number;
     }
 
-    /** Toggle the running state of the metronome */
+    /** Toggles the running state of the metronome */
     toggle() {
         const ms = this;
 
