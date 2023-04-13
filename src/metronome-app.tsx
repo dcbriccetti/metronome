@@ -1,5 +1,5 @@
 import MetronomeSound from "./metronome-sound"
-import {VisSettings} from "./visualization"
+import {VisSettings} from "./components/Visualization"
 
 export default class MetronomeApp {
     /**

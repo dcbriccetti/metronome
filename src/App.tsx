@@ -1,9 +1,8 @@
 import MetronomeApp from "./metronome-app"
-import {VisSettings} from "./visualization"
+import {VisSettings, Visualization} from "./components/Visualization"
 import Tempo from './components/Tempo'
 import SoundType from "./components/SoundType"
 import VisType from "./components/VisType"
-import Vis from "./components/Vis"
 import MetronomeSound, {Listener} from "./metronome-sound"
 import StartStopButton from "./components/StartStopButton"
 
@@ -38,7 +37,9 @@ export default function App(): JSX.Element {
                          onChange={(index: number) => metronomeApp.setVisualization(index)}/>
                 <StartStopButton metroSound={metroSound} onClick={() => metronomeApp.toggle()}/>
             </div>
-            <Vis getTime={() => metroSound.audioContext.currentTime} visSettings={visSettings}/>
+            <div className="col-sm" id='visualization'>
+                <Visualization getTime={() => metroSound.audioContext.currentTime} visSettings={visSettings}/>
+            </div>
         </div>
     </div>
 }
