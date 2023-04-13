@@ -20,7 +20,7 @@ export default function App(): JSX.Element {
         setTempo: (tempo: number) => visSettings.tempoBpm = tempo,
         setStartTime: (startTime: number) => visSettings.startTime = startTime
     };
-    const metroSound = new MetronomeSound('audio/', soundFilenames, metroSoundListener);
+    const sound = new MetronomeSound('audio/', soundFilenames, metroSoundListener);
 
     return <div className="container">
         <h1>Metronome</h1>
@@ -29,15 +29,15 @@ export default function App(): JSX.Element {
         <div className="row">
             <div className="col-sm">
                 <Tempo tempoBpm={visSettings.tempoBpm}
-                       onChange={tempo => metroSound.setTempo(tempo)}/>
+                       onChange={tempo => sound.setTempo(tempo)}/>
                 <SoundType filenames={soundFilenames}
-                           onChange={index => metroSound.setSound(index + 1)}/>
+                           onChange={index => sound.setSound(index + 1)}/>
                 <VisType names={visSettings.names}
                          onChange={(index: number) => visSettings.visualizationType = index}/>
-                <StartStopButton metroSound={metroSound} onClick={() => metroSound.toggle()}/>
+                <StartStopButton metroSound={sound} onClick={() => sound.toggle()}/>
             </div>
             <div className="col-sm" id='visualization'>
-                <Visualization getTime={() => metroSound.audioContext.currentTime} visSettings={visSettings}/>
+                <Visualization getTime={() => sound.audioContext.currentTime} visSettings={visSettings}/>
             </div>
         </div>
     </div>
