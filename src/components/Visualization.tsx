@@ -11,7 +11,6 @@ export interface VisSettings {
     tempoBpm: number,
     startTime: number,
     visualizationType: number,
-    names: string[]
 }
 
 export function Visualization(props: Props): JSX.Element {

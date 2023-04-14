@@ -11,7 +11,6 @@ export default function App(): JSX.Element {
         tempoBpm: 60,
         startTime: 0,
         visualizationType: 1,
-        names: ['Spinning Circle', 'Circle']
     };
 
     const soundFilenames = ['High_Woodblock.wav', 'Low_Woodblock.wav', 'High_Bongo.wav',
@@ -32,7 +31,7 @@ export default function App(): JSX.Element {
                        onChange={tempo => sound.setTempo(tempo)}/>
                 <SoundType filenames={soundFilenames}
                            onChange={index => sound.setSound(index + 1)}/>
-                <VisType names={visSettings.names}
+                <VisType names={['Spinning Circle', 'Circle']}
                          onChange={(index: number) => visSettings.visualizationType = index}/>
                 <StartStopButton metroSound={sound} onClick={() => sound.toggle()}/>
             </div>

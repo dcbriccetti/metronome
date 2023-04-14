@@ -12,6 +12,7 @@ export default class MetronomeSound {
     audioContext: AudioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
     private soundFiles: AudioLoader
     private source: AudioBufferSourceNode | undefined = undefined
+    private nextStart: number = 0
 
     constructor(private soundsPath: string, sounds: string[], private listener: Listener) {
         const urls = sounds.map(name => this.soundsPath + name)
@@ -36,42 +37,44 @@ export default class MetronomeSound {
 
     /** Toggles the running state of the metronome */
     toggle(): void {
-        const ms = this
-
-        function playMetronome() {
-            let nextStart: number = ms.audioContext.currentTime
-
-            function schedule(): void {
-                if (!ms.running) return
-
-                ms.listener.setStartTime(nextStart)
-                ms.listener.setTempo(ms.tempoBpm)
-                const bufIndex = ms.soundNum - 1
-                if (bufIndex >= ms.soundFiles.buffers.length) {
-                    alert('Sound files are not yet loaded')
-                } else if (ms.tempoBpm) {
-                    nextStart += 60 / ms.tempoBpm
-                    ms.source = ms.audioContext.createBufferSource()
-                    if (ms.source) {
-                        ms.source.buffer = ms.soundFiles.buffers[bufIndex]
-                        ms.source.connect(ms.audioContext.destination)
-                        ms.source.onended = schedule
-                        ms.source.start(nextStart)
-                    }
-                }
-            }
-
-            schedule()
-        }
-
         this.running = !this.running
         if (this.running) {
-            playMetronome()
+            this.startPlaying()
         } else {
-            this.listener.setTempo(0)
+            this.stopPlaying()
+        }
+    }
+
+    private startPlaying() {
+        this.nextStart = this.audioContext.currentTime
+        this.schedule()
+    }
+
+    private stopPlaying() {
+        this.listener.setTempo(0)
+        if (this.source) {
+            this.source.disconnect()
+            this.source = undefined
+        }
+    }
+
+    private schedule(): void {
+        if (!this.running) return
+
+        this.listener.setStartTime(this.nextStart)
+        this.listener.setTempo(this.tempoBpm)
+        const bufIndex = this.soundNum - 1
+        if (bufIndex >= this.soundFiles.buffers.length) {
+            alert('Sound files are not yet loaded')
+        } else if (this.tempoBpm) {
+            this.nextStart += 60 / this.tempoBpm
+            this.source = this.audioContext.createBufferSource()
             if (this.source) {
-                this.source.disconnect()
-                this.source = undefined
+                this.source.buffer = this.soundFiles.buffers[bufIndex]
+                this.source.connect(this.audioContext.destination)
+                this.source.onended = () => this.schedule()
+                console.log('starting at', this.nextStart)
+                this.source.start(this.nextStart)
             }
         }
     }
