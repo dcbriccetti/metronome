@@ -1,3 +1,5 @@
+import AudioLoader from "./AudioLoader"
+
 export interface Listener {
     setTempo: (t: number) => void;
     setStartTime: (t: number) => void
@@ -8,12 +10,12 @@ export default class MetronomeSound {
     private tempoBpm = 60
     private soundNum = 1
     audioContext: AudioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-    private soundFiles: SoundFiles
+    private soundFiles: AudioLoader
     private source: AudioBufferSourceNode | undefined = undefined
 
     constructor(private soundsPath: string, sounds: string[], private listener: Listener) {
         const urls = sounds.map(name => this.soundsPath + name)
-        this.soundFiles = new SoundFiles(this.audioContext, urls)
+        this.soundFiles = new AudioLoader(this.audioContext, urls)
     }
 
     /**
@@ -72,26 +74,5 @@ export default class MetronomeSound {
                 this.source = undefined
             }
         }
-    }
-}
-
-class SoundFiles {
-    buffers: AudioBuffer[]
-
-    constructor(context: AudioContext, urls: string[]) {
-        this.buffers = []
-
-        const promises: Promise<AudioBuffer>[] = urls.map((url: string) =>
-            fetch(url)
-                .then((response: Response) => response.arrayBuffer())
-                .then((arrayBuffer: ArrayBuffer) => context.decodeAudioData(arrayBuffer)))
-
-        Promise.all(promises)
-            .then((buffers: Awaited<AudioBuffer>[]) => {
-                this.buffers = buffers
-            })
-            .catch((error) => {
-                console.error(error)
-            })
     }
 }
