@@ -32,9 +32,10 @@ function createSketch(props: Props) {
         const {getTime, visSettings} = props
 
         p.setup = () => {
-            const vis = document.querySelector('#visualization')
-            if (vis) {
-                p.createCanvas(vis.clientWidth, vis.clientHeight).parent('visualization')
+            const parentId = 'visualization'
+            const parent = document.getElementById(parentId)
+            if (parent) {
+                p.createCanvas(parent.clientWidth, parent.clientHeight).parent(parentId)
                 p.colorMode(p.HSB)
             }
         }
