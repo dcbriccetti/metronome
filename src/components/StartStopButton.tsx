@@ -1,19 +1,20 @@
 import MetronomeSound from "../metronome-sound"
+import {useState} from "react"
 
 interface Props {
-    metroSound: MetronomeSound,
-    onClick: () => void
+    sound: MetronomeSound,
 }
 
-export default function StartStopButton({metroSound, onClick}: Props) {
+export default function StartStopButton({sound}: Props) {
+    const [label, setLabel] = useState('Start')
+
     function handleClick() {
-        onClick()
-        const button = document.querySelector<HTMLInputElement>('#metronome')!
-        button.value = metroSound.running ? 'Stop' : 'Start';
+        sound.toggle()
+        setLabel(sound.running ? 'Stop' : 'Start');
     }
 
     return <input id="metronome" className="form-control btn btn-secondary"
-                  type="button" value="Start"
+                  type="button" value={label}
                   onClick={handleClick}
     />
 }

@@ -73,7 +73,6 @@ export default class MetronomeSound {
                 this.source.buffer = this.soundFiles.buffers[bufIndex]
                 this.source.connect(this.audioContext.destination)
                 this.source.onended = () => this.schedule()
-                console.log('starting at', this.nextStart)
                 this.source.start(this.nextStart)
             }
         }

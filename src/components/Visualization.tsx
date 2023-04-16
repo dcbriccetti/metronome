@@ -4,16 +4,12 @@ import p5 from "p5"
 
 interface Props {
     getTime: () => number,
-    visSettings: VisSettings
+    getTempoBpm: () => number,
+    getStartTime: () => number,
+    getVisualizationType: () => number
 }
 
-export interface VisSettings {
-    tempoBpm: number,
-    startTime: number,
-    visualizationType: number,
-}
-
-export function Visualization(props: Props): JSX.Element {
+export default function Visualization(props: Props): JSX.Element {
     const sketchRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -21,14 +17,14 @@ export function Visualization(props: Props): JSX.Element {
             const p5Instance = new p5(createSketch(props), sketchRef.current)
             return () => p5Instance.remove()
         }
-    }, [props])
+    }, [])
 
     return <div ref={sketchRef}/>
 }
 
 function createSketch(props: Props) {
     return (p: p5) => {
-        const {getTime, visSettings} = props
+        const {getTime, getTempoBpm, getStartTime, getVisualizationType} = props
 
         p.setup = () => {
             const parentId = 'visualization'
@@ -42,8 +38,8 @@ function createSketch(props: Props) {
         p.draw = () => {
             function calcOffsetFraction() {
                 const secondsPerMinute = 60
-                const periodSeconds = secondsPerMinute / visSettings.tempoBpm
-                const secondsSinceStart = getTime() - visSettings.startTime
+                const periodSeconds = secondsPerMinute / getTempoBpm()
+                const secondsSinceStart = getTime() - getStartTime()
                 const offsetSeconds = secondsSinceStart % periodSeconds
                 return offsetSeconds / periodSeconds
             }
@@ -89,7 +85,7 @@ function createSketch(props: Props) {
                 () => drawLargeCircle()
             ]
 
-            visualizations[(visSettings.visualizationType)]()
+            visualizations[(getVisualizationType())]()
         }
     }
 }
