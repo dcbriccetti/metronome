@@ -12,8 +12,8 @@ export default function SoundType({filenames, onChange}: Props): JSX.Element {
         onChange(index);
     }
 
-    return <div className="form-group">
-        <label htmlFor="metroSound">Sound</label>
+    return <div className="mb-3">
+        <label className='form-label' htmlFor="metroSound">Sound</label>
         <select id="metroSound" className="form-control"
                 onChange={handleChange}>
             {filenames.map(name => {

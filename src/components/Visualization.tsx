@@ -30,7 +30,7 @@ function createSketch(props: Props) {
             const parentId = 'visualization'
             const parent = document.getElementById(parentId)
             if (parent) {
-                p.createCanvas(parent.clientWidth, parent.clientHeight).parent(parentId)
+                p.createCanvas(200, 200).parent(parentId)
                 p.colorMode(p.HSB)
             }
         }

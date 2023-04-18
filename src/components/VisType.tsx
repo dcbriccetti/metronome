@@ -14,8 +14,8 @@ export default function VisType({ names, onChange }: Props) {
         onChange(index)
     }
 
-    return <div className="form-group">
-        <label htmlFor="visType">Visualization</label>
+    return <div className="mb-3">
+        <label className='form-label' htmlFor="visType">Visualization</label>
         <select id="visType" className="form-control" defaultValue={names[selectedIndex]}
                 onChange={handleChange}>
             <option key='None'>None</option>

@@ -24,7 +24,7 @@ export default function App(): JSX.Element {
             <p className="byline">By <a href="https://davebsoft.com">Dave Briccetti</a>
                 <a className="source-link" href="https://github.com/dcbriccetti/metronome">Source code</a></p>
             <Row>
-                <Col>
+                <Col className="col-auto">
                     <Tempo tempoBpm={tempoBpm}
                            onChange={(t: number) => {
                                tempoBpm = t

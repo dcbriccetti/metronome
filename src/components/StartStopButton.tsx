@@ -14,7 +14,7 @@ export default function StartStopButton({sound}: Props) {
     }
 
     const buttonLabel = isRunning ? "Stop" : "Start"
-    const buttonClasses = `form-control btn btn-secondary ${isRunning ? "active" : ""}`
+    const buttonClasses = `mb-3 btn btn-secondary ${isRunning ? "active" : ""}`
 
     return (
         <button
