@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 interface Props {
     filenames: string[];
@@ -12,9 +12,9 @@ export default function SoundType({filenames, onChange}: Props): JSX.Element {
         onChange(index);
     }
 
-    return <div className="mb-3">
-        <label className='form-label' htmlFor="metroSound">Sound</label>
-        <select id="metroSound" className="form-control"
+    return <div className='mb-3'>
+        <label className='form-label' htmlFor='metroSound'>Sound</label>
+        <select id='metroSound' className='form-control'
                 onChange={handleChange}>
             {filenames.map(name => {
                 const fileExtension = /\..*/;

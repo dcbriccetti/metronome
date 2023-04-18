@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState} from 'react'
 
 interface Props {
     names: string[],
@@ -14,9 +14,9 @@ export default function VisType({ names, onChange }: Props) {
         onChange(index)
     }
 
-    return <div className="mb-3">
-        <label className='form-label' htmlFor="visType">Visualization</label>
-        <select id="visType" className="form-control" defaultValue={names[selectedIndex]}
+    return <div className='mb-3'>
+        <label className='form-label' htmlFor='visType'>Visualization</label>
+        <select id='visType' className='form-control' defaultValue={names[selectedIndex]}
                 onChange={handleChange}>
             <option key='None'>None</option>
             {names.map(visTypeName => <option key={visTypeName}>{visTypeName}</option>)}

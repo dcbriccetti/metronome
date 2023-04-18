@@ -1,6 +1,6 @@
 /** This p5.js sketch makes a visualization of the metronome beats */
-import React, {useRef, useEffect} from "react"
-import p5 from "p5"
+import React, {useRef, useEffect} from 'react'
+import p5 from 'p5'
 
 interface Props {
     getTime: () => number,

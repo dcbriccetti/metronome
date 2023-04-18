@@ -1,5 +1,5 @@
-import MetronomeSound from "../metronome-sound"
-import {useState} from "react"
+import MetronomeSound from '../metronome-sound'
+import {useState} from 'react'
 
 interface Props {
     sound: MetronomeSound;
@@ -13,14 +13,14 @@ export default function StartStopButton({sound}: Props) {
         setIsRunning(prevIsRunning => !prevIsRunning)
     }
 
-    const buttonLabel = isRunning ? "Stop" : "Start"
-    const buttonClasses = `mb-3 btn btn-secondary ${isRunning ? "active" : ""}`
+    const buttonLabel = isRunning ? 'Stop' : 'Start'
+    const buttonClasses = `mb-3 btn btn-secondary ${isRunning ? 'active' : ""}`
 
     return (
         <button
-            id="metronome"
+            id='metronome'
             className={buttonClasses}
-            type="button"
+            type='button'
             aria-pressed={isRunning}
             onClick={handleClick}
         >

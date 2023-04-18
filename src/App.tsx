@@ -1,11 +1,11 @@
-import Visualization from "./components/Visualization"
+import Visualization from './components/Visualization'
 import Tempo from './components/Tempo'
-import SoundType from "./components/SoundType"
-import VisType from "./components/VisType"
-import MetronomeSound from "./metronome-sound"
-import StartStopButton from "./components/StartStopButton"
-import "./App.css"
-import {Col, Container, Row} from "react-bootstrap"
+import SoundType from './components/SoundType'
+import VisType from './components/VisType'
+import MetronomeSound from './metronome-sound'
+import StartStopButton from './components/StartStopButton'
+import './App.css'
+import {Col, Container, Row} from 'react-bootstrap'
 
 export default function App(): JSX.Element {
     const soundFilenames = ['High_Woodblock.wav', 'Low_Woodblock.wav', 'High_Bongo.wav',
@@ -21,10 +21,10 @@ export default function App(): JSX.Element {
     return (
         <Container>
             <h1>Metronome</h1>
-            <p className="byline">By <a href="https://davebsoft.com">Dave Briccetti</a>
-                <a className="source-link" href="https://github.com/dcbriccetti/metronome">Source code</a></p>
+            <p className='byline'>By <a href='https://davebsoft.com'>Dave Briccetti</a>
+                <a className='source-link' href='https://github.com/dcbriccetti/metronome'>Source code</a></p>
             <Row>
-                <Col className="col-auto">
+                <Col className='col-auto'>
                     <Tempo tempoBpm={tempoBpm}
                            onChange={(t: number) => {
                                tempoBpm = t
@@ -36,7 +36,7 @@ export default function App(): JSX.Element {
                              onChange={(index: number) => visualizationType = index}/>
                     <StartStopButton sound={sound}/>
                 </Col>
-                <Col id="visualization">
+                <Col id='visualization'>
                     <Visualization getTime={() => sound.audioContext.currentTime}
                                    getTempoBpm={() => tempoBpm}
                                    getStartTime={() => startTime}

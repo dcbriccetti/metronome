@@ -1,4 +1,4 @@
-import AudioLoader from "./AudioLoader"
+import AudioLoader from './AudioLoader'
 
 export interface Listener {
     setTempo: (t: number) => void;

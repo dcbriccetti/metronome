@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState} from 'react'
 
 interface Props {
     tempoBpm: number,
@@ -14,10 +14,10 @@ export default function Tempo({tempoBpm, onChange}: Props) {
         onChange(tempo)
     }
 
-    return <div className="mb-3">
-        <label className="form-label" htmlFor="tempo">Tempo</label>
-        <input id="tempo" className="form-control" type="number" value={tempo}
-               min="20" max="180"
+    return <div className='mb-3'>
+        <label className='form-label' htmlFor='tempo'>Tempo</label>
+        <input id='tempo' className='form-control' type='number' value={tempo}
+               min='20' max='180'
                onChange={handleChange}/>
     </div>
 }
