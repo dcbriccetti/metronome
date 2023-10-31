@@ -1,30 +1,24 @@
-import MetronomeSound from '../metronome-sound'
-import {useState} from 'react'
+import ToggleButton from '@mui/material/ToggleButton';
 
 interface Props {
-    sound: MetronomeSound;
+    isRunning: boolean;
+    setIsRunning: (is: boolean) => void;
 }
 
-export default function StartStopButton({sound}: Props) {
-    const [isRunning, setIsRunning] = useState(false)
+export default function StartStopButton({isRunning, setIsRunning}: Props) {
 
     function handleClick() {
-        sound.toggle()
-        setIsRunning(prevIsRunning => !prevIsRunning)
+        setIsRunning(!isRunning);
     }
 
-    const buttonLabel = isRunning ? 'Stop' : 'Start'
-    const buttonClasses = `mb-3 btn btn-secondary ${isRunning ? 'active' : ""}`
-
     return (
-        <button
-            id='metronome'
-            className={buttonClasses}
-            type='button'
-            aria-pressed={isRunning}
-            onClick={handleClick}
+        <ToggleButton
+            value="check"
+            selected={isRunning}
+            onChange={handleClick}
+            color="primary"
         >
-            {buttonLabel}
-        </button>
-    )
+            {isRunning ? 'Stop' : 'Start'}
+        </ToggleButton>
+    );
 }

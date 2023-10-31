@@ -1,10 +1,5 @@
 import AudioLoader from './AudioLoader'
 
-export interface Listener {
-    setTempo: (t: number) => void;
-    setStartTime: (t: number) => void
-}
-
 export default class MetronomeSound {
     running = false
     private tempoBpm = 60
@@ -14,7 +9,7 @@ export default class MetronomeSound {
     private source: AudioBufferSourceNode | undefined = undefined
     private nextStart: number = 0
 
-    constructor(private soundsPath: string, sounds: string[], private listener: Listener) {
+    constructor(private soundsPath: string, sounds: string[], private setStartTime: (t: number) => void) {
         const urls = sounds.map(name => this.soundsPath + name)
         this.soundFiles = new AudioLoader(this.audioContext, urls)
     }
@@ -36,8 +31,8 @@ export default class MetronomeSound {
     }
 
     /** Toggles the running state of the metronome */
-    toggle(): void {
-        this.running = !this.running
+    setIsRunning(running: boolean): void {
+        this.running = running
         if (this.running) {
             this.startPlaying()
         } else {
@@ -51,7 +46,6 @@ export default class MetronomeSound {
     }
 
     private stopPlaying() {
-        this.listener.setTempo(0)
         if (this.source) {
             this.source.disconnect()
             this.source = undefined
@@ -61,8 +55,7 @@ export default class MetronomeSound {
     private schedule(): void {
         if (!this.running) return
 
-        this.listener.setStartTime(this.nextStart)
-        this.listener.setTempo(this.tempoBpm)
+        this.setStartTime(this.nextStart)
         const bufIndex = this.soundNum - 1
         if (bufIndex >= this.soundFiles.buffers.length) {
             alert('Sound files are not yet loaded')

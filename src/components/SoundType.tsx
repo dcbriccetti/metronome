@@ -1,27 +1,44 @@
-import React from 'react'
+import React, {useState} from 'react';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select, {SelectChangeEvent} from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 interface Props {
     filenames: string[];
-    onChange: (index: number) => void
+    onChange: (index: number) => void;
 }
 
 export default function SoundType({filenames, onChange}: Props): JSX.Element {
+    // Set the initial state to 0 to select the first sound
+    const [selectedSoundIndex, setSelectedSoundIndex] = useState<number>(0);
 
-    function handleChange(changeEvent: React.ChangeEvent<HTMLSelectElement>) {
-        const index = changeEvent.target.selectedIndex
+    const handleChange = (event: SelectChangeEvent<number>) => {
+        const index = event.target.value as number; // Cast the value to number
+        setSelectedSoundIndex(index);
         onChange(index);
-    }
+    };
 
-    return <div className='mb-3'>
-        <label className='form-label' htmlFor='metroSound'>Sound</label>
-        <select id='metroSound' className='form-control'
-                onChange={handleChange}>
-            {filenames.map(name => {
-                const fileExtension = /\..*/;
-                const optionText = name.replace('_', ' ').replace(fileExtension, '');
-                return <option key={optionText}>{optionText}</option>
-            })}
-        </select>
-    </div>
+    return (
+        <FormControl fullWidth>
+            <InputLabel id="sound-type-select-label">Sound</InputLabel>
+            <Select
+                labelId="sound-type-select-label"
+                id="sound-type-select"
+                value={selectedSoundIndex}
+                label="Sound"
+                onChange={handleChange}
+            >
+                {filenames.map((filename, index) => {
+                    const fileExtension = /\..*/;
+                    const optionText = filename.replace('_', ' ').replace(fileExtension, '');
+                    return (
+                        <MenuItem key={filename} value={index}>
+                            {optionText}
+                        </MenuItem>
+                    );
+                })}
+            </Select>
+        </FormControl>
+    );
 }
-
