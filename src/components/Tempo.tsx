@@ -11,9 +11,10 @@ export default function Tempo({tempoBpm, onChange}: Props) {
 
     function handleChange(changeEvent: React.ChangeEvent<HTMLInputElement>) {
         const newTempo = changeEvent.target.valueAsNumber;
-        console.log(newTempo);
-        setTempo(newTempo);
-        onChange(newTempo);
+        if (!isNaN(newTempo)) {
+            setTempo(newTempo);
+            onChange(newTempo);
+        }
     }
 
     return (

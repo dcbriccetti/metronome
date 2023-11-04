@@ -10,14 +10,13 @@ interface Props {
 }
 
 export default function SoundType({filenames, onChange}: Props): JSX.Element {
-    // Set the initial state to 0 to select the first sound
     const [selectedSoundIndex, setSelectedSoundIndex] = useState<number>(0);
 
-    const handleChange = (event: SelectChangeEvent<number>) => {
+    function handleChange(event: SelectChangeEvent<number>) {
         const index = event.target.value as number; // Cast the value to number
         setSelectedSoundIndex(index);
         onChange(index);
-    };
+    }
 
     return (
         <FormControl fullWidth>

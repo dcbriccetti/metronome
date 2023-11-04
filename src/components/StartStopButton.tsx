@@ -6,16 +6,11 @@ interface Props {
 }
 
 export default function StartStopButton({isRunning, setIsRunning}: Props) {
-
-    function handleClick() {
-        setIsRunning(!isRunning);
-    }
-
     return (
         <ToggleButton
-            value="check"
+            value=""
             selected={isRunning}
-            onChange={handleClick}
+            onChange={() => setIsRunning(!isRunning)}
             color="primary"
         >
             {isRunning ? 'Stop' : 'Start'}

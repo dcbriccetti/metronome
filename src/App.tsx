@@ -36,9 +36,9 @@ export default function App(): JSX.Element {
             <Grid container spacing={2}>
                 <Grid item xs="auto">
                     <Box mb={1}>
-                        <Tempo tempoBpm={tempoBpm} onChange={(t: number) => {
-                            setTempoBpm(t);
-                            sound?.setTempo(t);
+                        <Tempo tempoBpm={tempoBpm} onChange={(tempoBpm: number) => {
+                            setTempoBpm(tempoBpm);
+                            sound?.setTempo(tempoBpm);
                         }}/>
                     </Box>
                     <Box>
