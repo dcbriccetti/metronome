@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import TextField from '@mui/material/TextField';
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 interface Props {
     tempoBpm: number;
@@ -9,25 +11,25 @@ interface Props {
 export default function Tempo({tempoBpm, onChange}: Props) {
     const [tempo, setTempo] = useState(tempoBpm);
 
-    function handleChange(changeEvent: React.ChangeEvent<HTMLInputElement>) {
-        const newTempo = changeEvent.target.valueAsNumber;
-        if (!isNaN(newTempo)) {
-            setTempo(newTempo);
-            onChange(newTempo);
+    const handleSliderChange = (event: Event, newValue: number | number[]) => {
+        if (typeof newValue === 'number') {
+            setTempo(newValue);
+            onChange(newValue);
         }
-    }
+    };
 
     return (
-        <TextField
-            fullWidth
-            id="tempo"
-            label="Tempo, in Beats per Minute"
-            type="number"
-            value={tempo}
-            InputProps={{inputProps: {min: 20, max: 180}}}
-            onChange={handleChange}
-            variant="outlined"
-            margin="normal"
-        />
+        <Box width="20em">
+            <Typography id="input-slider" gutterBottom>
+                Tempo: {tempo} BPM
+            </Typography>
+            <Slider
+                aria-labelledby="input-slider"
+                value={tempo}
+                onChange={handleSliderChange}
+                min={30}
+                max={220}
+            />
+        </Box>
     );
 }
