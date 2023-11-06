@@ -2,13 +2,13 @@ import Header from './components/Header';
 import Tempo from './components/Tempo';
 import SoundType from './components/SoundType';
 import VisualizationType from './components/VisualizationType';
-import Visualization from './components/Visualization';
+import Visualization, {visualizationNames} from './components/Visualization';
 import StartStopButton from './components/StartStopButton';
 import MetronomeSound from './metronome-sound';
 import {Box, Container, Grid} from '@mui/material';
 import {useEffect, useState} from "react";
 
-export default function App(): JSX.Element {
+export default function App() {
     const soundFilenames = [
         'High_Woodblock.wav',
         'Low_Woodblock.wav',
@@ -44,7 +44,7 @@ export default function App(): JSX.Element {
                         <SoundType filenames={soundFilenames} onChange={index => sound?.setSound(index + 1)}/>
                     </Box>
                     <Box>
-                        <VisualizationType names={['Spinning Circle', 'Circle']}
+                        <VisualizationType names={visualizationNames()}
                                            setVisualizationType={setVisualizationType}/>
                     </Box>
 
@@ -60,8 +60,8 @@ export default function App(): JSX.Element {
                         running={isRunning}
                         visualizationType={visualizationType}
                         getTime={() => sound.audioContext.currentTime}
-                        getTempoBpm={() => tempoBpm}
-                        getStartTime={() => startTime}
+                        tempoBpm={tempoBpm}
+                        startTime={startTime}
                     />}
                 </Grid>
             </Grid>
