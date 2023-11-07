@@ -1,16 +1,41 @@
 export default class AudioLoader {
-    buffers: AudioBuffer[]
+    private buffers: AudioBuffer[] = [];
 
-    constructor(context: AudioContext, urls: string[]) {
-        this.buffers = []
+    constructor(private context: AudioContext, urls: string[]) {
+        const loadPromise = this.loadBuffers(urls);
+    }
 
-        const promises: Promise<AudioBuffer>[] = urls.map((url: string) =>
-            fetch(url)
-                .then((response: Response) => response.arrayBuffer())
-                .then((arrayBuffer: ArrayBuffer) => context.decodeAudioData(arrayBuffer)))
+    private async loadBuffers(urls: string[]): Promise<AudioBuffer[]> {
+        const bufferPromises: Promise<AudioBuffer>[] =
+            urls.map(async (url) => {
+                try {
+                    const response = await fetch(url);
+                    const arrayBuffer = await response.arrayBuffer();
+                    return await this.context.decodeAudioData(arrayBuffer);
+                } catch (error) {
+                    console.error(`Error loading audio from ${url}:`, error);
+                    throw error;
+                }
+            });
 
-        Promise.all(promises)
-            .then((buffers: Awaited<AudioBuffer>[]) => this.buffers = buffers)
-            .catch(error => console.error(error))
+        try {
+            const buffers = await Promise.all(bufferPromises);
+            this.buffers = buffers;
+            return buffers;
+        } catch (error) {
+            console.error('Error loading audio buffers:', error);
+            throw error;
+        }
+    }
+
+    isLoaded(): boolean {
+        return this.buffers.length > 0 && this.buffers.every(buffer => buffer !== undefined);
+    }
+
+    getBuffers(): AudioBuffer[] {
+        if (!this.isLoaded()) {
+            throw new Error('Attempt to access audio buffers before they are loaded');
+        }
+        return this.buffers;
     }
 }

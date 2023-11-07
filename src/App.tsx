@@ -26,7 +26,7 @@ export default function App() {
         const newSound = new MetronomeSound('audio/', soundFilenames, setStartTime);
         setSound(newSound);
 
-        return () => newSound.setIsRunning(false);
+        return () => newSound.dispose();
     }, []);
 
     return (

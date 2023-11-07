@@ -1,16 +1,20 @@
 import AudioLoader from './AudioLoader'
 
 export default class MetronomeSound {
-    running = false
+    private running = false
     private tempoBpm = 60
     private soundNum = 1
-    audioContext: AudioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+    public audioContext: AudioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
     private soundFiles: AudioLoader
-    private source: AudioBufferSourceNode | undefined = undefined
+    private source?: AudioBufferSourceNode
     private nextStart: number = 0
+    private soundsPath: string
+    private setStartTime: (t: number) => void
 
-    constructor(private soundsPath: string, sounds: string[], private setStartTime: (t: number) => void) {
-        const urls = sounds.map(name => this.soundsPath + name)
+    constructor(soundsPath: string, sounds: string[], setStartTime: (t: number) => void) {
+        this.soundsPath = soundsPath;
+        this.setStartTime = setStartTime;
+        const urls = sounds.map(name => soundsPath + name)
         this.soundFiles = new AudioLoader(this.audioContext, urls)
     }
 
@@ -18,7 +22,7 @@ export default class MetronomeSound {
      * Sets the tempo.
      * @param bpm tempo in beats per minute
      */
-    setTempo(bpm: number) {
+    setTempo(bpm: number): void {
         this.tempoBpm = bpm
     }
 
@@ -26,7 +30,7 @@ export default class MetronomeSound {
      * Sets the metronome sound.
      * @param number the one-based sound index
      */
-    setSound(number: number) {
+    setSound(number: number): void {
         this.soundNum = number
     }
 
@@ -40,12 +44,12 @@ export default class MetronomeSound {
         }
     }
 
-    private startPlaying() {
+    private startPlaying(): void {
         this.nextStart = this.audioContext.currentTime
         this.schedule()
     }
 
-    private stopPlaying() {
+    private stopPlaying(): void {
         if (this.source) {
             this.source.disconnect()
             this.source = undefined
@@ -57,17 +61,27 @@ export default class MetronomeSound {
 
         this.setStartTime(this.nextStart)
         const bufIndex = this.soundNum - 1
-        if (bufIndex >= this.soundFiles.buffers.length) {
-            alert('Sound files are not yet loaded')
-        } else if (this.tempoBpm) {
-            this.nextStart += 60 / this.tempoBpm
-            this.source = this.audioContext.createBufferSource()
-            if (this.source) {
-                this.source.buffer = this.soundFiles.buffers[bufIndex]
-                this.source.connect(this.audioContext.destination)
-                this.source.onended = () => this.schedule()
-                this.source.start(this.nextStart)
-            }
+        if (! this.soundFiles.isLoaded()) {
+            console.error('Sound files are not yet loaded')
+            return;
         }
+
+        if (this.tempoBpm) {
+            const interval = 60 / this.tempoBpm
+            this.nextStart += interval
+            this.source = this.audioContext.createBufferSource()
+            this.source.buffer = this.soundFiles.getBuffers()[bufIndex]
+            this.source.connect(this.audioContext.destination)
+            this.source.onended = () => this.schedule()
+            this.source.start(this.nextStart)
+        }
+    }
+
+    dispose(): void {
+        this.setIsRunning(false);
+        if (this.source) {
+            this.source.disconnect()
+        }
+        this.audioContext.close()
     }
 }
