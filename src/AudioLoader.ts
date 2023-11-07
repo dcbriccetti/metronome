@@ -19,9 +19,8 @@ export default class AudioLoader {
             });
 
         try {
-            const buffers = await Promise.all(bufferPromises);
-            this.buffers = buffers;
-            return buffers;
+            this.buffers = await Promise.all(bufferPromises);
+            return this.buffers;
         } catch (error) {
             console.error('Error loading audio buffers:', error);
             throw error;

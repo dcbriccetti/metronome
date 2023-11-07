@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select, {SelectChangeEvent} from '@mui/material/Select';
@@ -6,15 +6,13 @@ import MenuItem from '@mui/material/MenuItem';
 
 interface Props {
     filenames: string[];
+    selectedIndex: number;
     onChange: (index: number) => void;
 }
 
-export default function SoundType({filenames, onChange}: Props): JSX.Element {
-    const [selectedSoundIndex, setSelectedSoundIndex] = useState<number>(0);
-
+export default function SoundType({filenames, selectedIndex, onChange}: Props) {
     function handleChange(event: SelectChangeEvent<number>) {
-        const index = event.target.value as number; // Cast the value to number
-        setSelectedSoundIndex(index);
+        const index = event.target.value as number;
         onChange(index);
     }
 
@@ -24,7 +22,7 @@ export default function SoundType({filenames, onChange}: Props): JSX.Element {
             <Select
                 labelId="sound-type-select-label"
                 id="sound-type-select"
-                value={selectedSoundIndex}
+                value={selectedIndex}
                 label="Sound"
                 onChange={handleChange}
             >
